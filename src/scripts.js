@@ -11,7 +11,7 @@ window.onload = function () {
         console.log("x:" + x + ", y:" + y);
 
         //置けるなら置く処理
-        tryPutPiece(x,y)
+        tryPutPiece(x, y)
 
       })
     })
@@ -22,16 +22,13 @@ window.onload = function () {
 function tryPutPiece(x, y) {
   //TODO 置けるか判定判定
   if (canPut(x, y)) {
+    console.log("putPiece");
 
-    console.log("tryPutPiece");
+    const myColor = document.getElementById('teban').innerText;
+    const td = getTd(x, y)
+    td.innerHTML = '<div class="Piece bg-' + myColor + '" />'
 
-    if (getColor(x, y) === undefined) {
-      const color = document.getElementById('teban').innerText;
-      const td = getTd(x,y)
-      td.innerHTML = '<div class="Piece bg-' + color + '" />'
-    }
-
-    turning();
+    turning(x, y, myColor);
 
     changeTeban();
   }
@@ -47,22 +44,64 @@ function changeTeban() {
   }
 }
 
-/** 駒を置けるかどうか */
+/** 駒を置けるかどうか
+ * @returns true || false
+ */
 function canPut(x, y) {
   if (x < 0 || x > 7 || y < 0 || y > 7) {
     return null;
   }
-  const color = document.getElementById('teban').innerText;
-  let opponent = (color == 'black') ? 'white' : 'black';
 
-  //未実装
-  return true;
+  if (getColor(x, y) !== undefined) {
+    return false;
+  }
+  const myColor = document.getElementById('teban').innerText;
+  const opponent = (myColor == 'black') ? 'white' : 'black';
+
+  const directions = [
+    { xd: -1, yd: -1 },
+    { xd: -1, yd: 0 },
+    { xd: -1, yd: 1 },
+    { xd: 0, yd: -1 },
+    { xd: 0, yd: 1 },
+    { xd: 1, yd: -1 },
+    { xd: 1, yd: 0 },
+    { xd: 1, yd: 1 },
+  ];
+
+  for (let d of directions) {
+    if (getColor(x + d.xd, y + d.yd) == opponent) {
+      if (findMyColor((x + d.xd + d.xd), d.xd, (y + d.yd + d.yd), d.yd, myColor)) {
+        return true;
+      }
+    }
+  }
+  console.log("置けないです");
+  return false;
+}
+
+
+function findMyColor(x, xd, y, yd, myColor) {
+
+  const opponent = (myColor == 'black') ? 'white' : 'black';
+
+  if (getColor(x, y) == opponent) {
+    return findMyColor(x + xd, xd, y + yd, yd, myColor);
+  } else if (getColor(x, y) == myColor) {
+    console.log("x:" + x + "  y:" + y + "  に自分色を見つけたので置けます");
+    return true;
+  } else {
+    return false;
+  }
+  
 }
 
 /** 駒を置いたあとめくる処理 */
-function turning() {
+function turning(x, y, myColor) {
   console.log("turning"); //未実装
 }
+
+
 
 /**
  * 色を取得
@@ -70,8 +109,8 @@ function turning() {
  */
 function getColor(x, y) {
 
-  const td = getTd(x,y);
-  if(td == undefined){
+  const td = getTd(x, y);
+  if (td == undefined) {
     return td;
   }
 
@@ -86,7 +125,8 @@ function getColor(x, y) {
     return 'white';
   }
 }
-function getTd(x,y){
+
+function getTd(x, y) {
   if (x < 0 || x > 7 || y < 0 || y > 7) {
     return null;
   }

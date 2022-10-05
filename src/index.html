@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="jp">
+
+<head>
+  <meta charset="utf-8">
+  <title>DOM練習オセロ</title>
+  <link href="./../dist/output.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <div class="container mx-auto">
+    <h1 class="text-3xl font-bold underline">DOM練習</h1>
+
+
+    <table class="m-10 border-2 border-gray-900 border-collapse bg-green-700 shadow-lg">
+      <colgroup>
+        <col class="w-10">
+        <col class="w-10">
+        <col class="w-10">
+        <col class="w-10">
+        <col class="w-10">
+        <col class="w-10">
+        <col class="w-10">
+        <col class="w-10">
+      </colgroup>
+      <tbody>
+        <tr class="h-10">
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+
+        <tr class="h-10">
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+
+        <tr class="h-10">
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+
+        <tr class="h-10">
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>
+            <div class="Piece bg-white" />
+          </td>
+          <td>
+            <div class="Piece bg-black" />
+          </td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+
+        <tr class="h-10">
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>
+            <div class="Piece bg-black" />
+          </td>
+          <td>
+            <div class="Piece bg-white" />
+          </td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+
+        <tr class="h-10">
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+
+        <tr class="h-10">
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+
+        <tr class="h-10">
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div>
+      <p><span id="teban">black</span>の手番です</p>
+      <button type="button" onclick='changeTeban();' class="p-2 border shadow-lg rounded-lg
+        bg-gradient-to-b border-gray-400 bg-blue-300 hover:opacity-80">相手のターンへ</button>
+    </div>
+  </div>
+
+
+  <script src="./scripts.js"></script>
+</body>
+
+</html>

@@ -108,20 +108,19 @@ function turning(x, y, myColor) {
     if (getColor(x + d.xd, y + d.yd) == opponent
       && findMyColor(x + d.xd, d.xd, y + d.yd, d.yd, myColor)) {
       //めくれるのでめくる
-      turnUntilColor(x + d.xd, d.xd, y + d.yd, d.yd, myColor);
+      turnUntilMyColor(x + d.xd, d.xd, y + d.yd, d.yd, myColor);
     }
   })
 }
 
 /** 指定方向の相手色をめくっていく */
 function turnUntilMyColor(x, xd, y, yd, myColor) {
-  console.log("x:" + x, " xd:" + xd + "  y:" + y + "  yd:" + yd + "  myColor:" + myColor)
 
   const opponent = (myColor == 'black') ? 'white' : 'black';
 
   if (getColor(x, y) == opponent) {
     turn(x, y);
-    turnUntilColor(x + xd, xd, y + yd, yd, myColor);
+    turnUntilMyColor(x + xd, xd, y + yd, yd, myColor);
   }
 }
 
@@ -163,6 +162,7 @@ function getColor(x, y) {
     return 'white';
   }
 }
+
 
 function getTd(x, y) {
   if (x < 0 || x > 7 || y < 0 || y > 7) {

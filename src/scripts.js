@@ -8,7 +8,6 @@ window.onload = function () {
 
     tds.forEach(function (td, x) {
       td.addEventListener('click', function () {
-        console.log("x:" + x + ", y:" + y);
 
         //置けるなら置く処理
         tryPutPiece(x, y)
@@ -20,10 +19,7 @@ window.onload = function () {
 
 /** 置けるかどうか判定し、置けたらめくって相手手番へ */
 function tryPutPiece(x, y) {
-  //TODO 置けるか判定判定
-  if (canPut(x, y)) {
-    console.log("putPiece");
-
+  if (canPutPiece(x, y)) {
     const myColor = document.getElementById('teban').innerText;
     const td = getTd(x, y)
     td.innerHTML = '<div class="Piece bg-' + myColor + '" />'
@@ -44,10 +40,8 @@ function changeTeban() {
   }
 }
 
-/** 駒を置けるかどうか
- * @returns true || false
- */
-function canPut(x, y) {
+/** 駒を置けるかどうか */
+function canPutPiece(x, y) {
   if (x < 0 || x > 7 || y < 0 || y > 7) {
     return null;
   }
@@ -88,24 +82,68 @@ function findMyColor(x, xd, y, yd, myColor) {
   if (getColor(x, y) == opponent) {
     return findMyColor(x + xd, xd, y + yd, yd, myColor);
   } else if (getColor(x, y) == myColor) {
-    console.log("x:" + x + "  y:" + y + "  に自分色を見つけたので置けます");
     return true;
   } else {
     return false;
   }
-  
+
 }
 
 /** 駒を置いたあとめくる処理 */
 function turning(x, y, myColor) {
-  console.log("turning"); //未実装
+  const opponent = (myColor == 'black') ? 'white' : 'black';
+
+  const directions = [
+    { xd: -1, yd: -1 },
+    { xd: -1, yd: 0 },
+    { xd: -1, yd: 1 },
+    { xd: 0, yd: -1 },
+    { xd: 0, yd: 1 },
+    { xd: 1, yd: -1 },
+    { xd: 1, yd: 0 },
+    { xd: 1, yd: 1 },
+  ];
+  directions.forEach(d => {
+    //隣が相手色なら、奥に自分の色を探す
+    if (getColor(x + d.xd, y + d.yd) == opponent
+      && findMyColor(x + d.xd, d.xd, y + d.yd, d.yd, myColor)) {
+      //めくれるのでめくる
+      turnUntilColor(x + d.xd, d.xd, y + d.yd, d.yd, myColor);
+    }
+  })
 }
 
+/** 指定方向の相手色をめくっていく */
+function turnUntilMyColor(x, xd, y, yd, myColor) {
+  console.log("x:" + x, " xd:" + xd + "  y:" + y + "  yd:" + yd + "  myColor:" + myColor)
+
+  const opponent = (myColor == 'black') ? 'white' : 'black';
+
+  if (getColor(x, y) == opponent) {
+    turn(x, y);
+    turnUntilColor(x + xd, xd, y + yd, yd, myColor);
+  }
+}
+
+/** 白黒反転させるだけ */
+function turn(x, y) {
+  const td = getTd(x, y);
+  const div = td.getElementsByTagName('div')[0];
+  if (getColor(x, y) == 'black') {
+    div.classList.remove('bg-black');
+    div.classList.add('bg-white');
+  } else if (getColor(x, y) == 'white') {
+    div.classList.remove('bg-white');
+    div.classList.add('bg-black');
+  } else {
+    throw error;
+  }
+}
 
 
 /**
  * 色を取得
- * 'black', 'white', 置かれてなかったらundefined、盤外ならnull
+ * 'black' or 'white', 置かれてなかったらundefined、盤外ならnull
  */
 function getColor(x, y) {
 
@@ -119,7 +157,7 @@ function getColor(x, y) {
     return undefined;
   }
   const className = td_divs[0].className;
-  if (className.match(/black/)) {
+  if (className.match(/bg-black/)) {
     return 'black';
   } else {
     return 'white';
